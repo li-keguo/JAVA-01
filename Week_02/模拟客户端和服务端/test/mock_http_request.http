@@ -1,0 +1,43 @@
+### http接口模拟测试
+### 单线程服务
+POST http://127.0.0.1:8801
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
+
+## 预测结果
+//HTTP/1.1 200 OK
+//Content-Type:text/html;charset=utf-8
+//Content-Length:9
+//
+//hello,nio
+#Response code: 200 (OK); Time: 31ms; Content length: 9 bytes
+
+### 多线程服务
+POST http://127.0.0.1:8802
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
+
+## 预测结果
+//HTTP/1.1 200 OK
+//Content-Type:text/html;charset=utf-8
+//Content-Length:9
+//
+//hello,nio
+#Response code: 200 (OK); Time: 38ms; Content length: 9 bytes
+
+### 多线程（线程池）服务
+POST http://127.0.0.1:8803
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
+
+## 预测结果
+//HTTP/1.1 200 OK
+//Content-Type:text/html;charset=utf-8
+//Content-Length:9
+//
+//hello,nio
+#Response code: 200 (OK); Time: 28ms; Content length: 9 bytes
+
