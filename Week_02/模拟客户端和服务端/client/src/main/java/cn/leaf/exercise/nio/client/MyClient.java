@@ -26,35 +26,27 @@ import java.util.Scanner;
  */
 public class MyClient {
 
-    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
-    private static final HttpClient HTTP_CLIENT = HttpClientBuilder.create().build();
-
     public static void main(String[] args) throws IOException {
-        String url = "http://127.0.0.1:8801";
-//        String url = "http://www.baidu.com";
-//        try (Response okHttpResponse = OK_HTTP_CLIENT.newCall(new Request.Builder()
-//                .url(url)
-//                .build())
-//                .execute()) {
-//            System.out.println(okHttpResponse);
-//            System.out.println(Objects.requireNonNull(okHttpResponse.body()).string());
-//        }
-//        HttpResponse response = HTTP_CLIENT.execute(new HttpGet(url));
-//        show(response);
         Executor executor = new Executor();
-        executor.addService("okhttp", new OkHttpClientService(), "ok");
+        executor.addService("okhttp", new OkHttpClientService(), "ok", "o");
         executor.addService("httpclient", new HttpClientService(), "client", "c", "cl");
         executor.run();
-
     }
 
     static class Executor {
         private Map<String, HttpRequestService> services;
-
-        public final String COMMAND_SPLITE_CODE = " ";
+        public final String COMMAND_SPLIT_CODE = " ";
         public final String COMMAND_EXIT = "exit";
+        public final String URL_PREFIX = "http://";
         private Scanner scanner;
 
+        /**
+         * 添加服务
+         *
+         * @param command 命令
+         * @param service 服务
+         * @param alies   别名
+         */
         public void addService(String command, HttpRequestService service, String... alies) {
             if (services == null) {
                 services = new HashMap<>();
@@ -65,6 +57,9 @@ public class MyClient {
             }
         }
 
+        /**
+         * 运行
+         */
         public void run() {
             String userInput = userInput();
             while (!COMMAND_EXIT.equals(userInput)) {
@@ -80,7 +75,7 @@ public class MyClient {
                     } else {
                         System.out.println(String.format("未知的指令{%s}", command));
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 userInput = userInput();
@@ -96,35 +91,48 @@ public class MyClient {
         }
 
         private String getCommand(String userInput) {
-            if (userInput == null || !userInput.contains(COMMAND_SPLITE_CODE)) {
+            if (userInput == null || !userInput.contains(COMMAND_SPLIT_CODE)) {
                 System.out.println(String.format("不合法的命令{%s}", userInput));
                 return null;
             }
-            return userInput.substring(0, userInput.indexOf(COMMAND_SPLITE_CODE));
+            return userInput.substring(0, userInput.indexOf(COMMAND_SPLIT_CODE));
         }
 
         private String getUrl(String userInput) {
-            if (userInput == null || !userInput.contains(COMMAND_SPLITE_CODE)) {
+            if (userInput == null || !userInput.contains(COMMAND_SPLIT_CODE)) {
                 System.out.println(String.format("不合法的命令{%s}", userInput));
                 return null;
             }
-            String url = userInput.substring(userInput.indexOf(COMMAND_SPLITE_CODE)).trim();
-            if (!url.startsWith("http://")) {
-                url = "http://" + url;
+            String url = userInput.substring(userInput.indexOf(COMMAND_SPLIT_CODE)).trim();
+            if (url.startsWith(":")) {
+                url = "127.0.0.1" + url;
+            }
+            if (!url.startsWith(URL_PREFIX)) {
+                url = URL_PREFIX + url;
             }
             return url;
         }
     }
 
     interface HttpRequestService extends Closeable {
+        /**
+         * 发送请求
+         *
+         * @param url url地址
+         * @throws IOException 读取异常
+         */
         void send(String url) throws IOException;
 
+        /**
+         * 显示结果
+         *
+         * @throws IOException 读取异常
+         */
         void show() throws IOException;
     }
 
     static class HttpClientService implements HttpRequestService {
         private final HttpClient HTTP_CLIENT = HttpClientBuilder.create().build();
-
         private final ThreadLocal<HttpResponse> currentHttpResponse = new ThreadLocal<>();
 
         @Override
@@ -133,11 +141,12 @@ public class MyClient {
         }
 
         @Override
-        public void show() {
+        public void show() throws IOException {
             HttpResponse response = currentHttpResponse.get();
             if (response != null) {
                 System.out.println(response.getEntity().getContentType());
-                System.out.println(response.getEntity().getContentLength());
+                System.out.println(response.toString());
+                System.out.println(response.getEntity().toString());
             } else {
                 System.out.println("未有返回结果");
             }
@@ -151,7 +160,6 @@ public class MyClient {
 
     static class OkHttpClientService implements HttpRequestService {
         private final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
-
         private final ThreadLocal<Response> currentResponse = new ThreadLocal<>();
 
         @Override
@@ -182,10 +190,5 @@ public class MyClient {
             }
             currentResponse.remove();
         }
-    }
-
-    private static void show(HttpResponse response) {
-        System.out.println(response.getEntity().getContentType());
-        System.out.println(response.getEntity().getContentLength());
     }
 }

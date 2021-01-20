@@ -41,3 +41,8 @@ Content-Type: application/json; charset=UTF-8
 //hello,nio
 #Response code: 200 (OK); Time: 28ms; Content length: 9 bytes
 
+### 百度
+POST http://www.baidu.com
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
