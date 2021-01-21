@@ -11,6 +11,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -145,8 +146,11 @@ public class MyClient {
             HttpResponse response = currentHttpResponse.get();
             if (response != null) {
                 System.out.println(response.getEntity().getContentType());
-                System.out.println(response.toString());
-                System.out.println(response.getEntity().toString());
+                System.out.println(response.getEntity().getContentLength());
+                InputStream inputStream = response.getEntity().getContent();
+                byte[] bytes = new byte[inputStream.available()];
+                inputStream.read(bytes);
+                System.out.println(new String(bytes));
             } else {
                 System.out.println("未有返回结果");
             }

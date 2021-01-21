@@ -46,3 +46,31 @@ POST http://www.baidu.com
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json; charset=UTF-8
+
+
+{
+  "dateTime": "2021-01-01",
+  "jzDateTime": "2021-01-20",
+  "tradeseqId": [
+    "1000008526"
+  ],
+  "extractType": [
+    {
+      "type": "reportAndResultPoint",
+      "clearingPoint": "0"
+    }
+  ],
+  "test": {
+    "dateTime": "2021-01-01",
+    "jzDateTime": "2021-01-20",
+    "extractType": [
+      "reportAndResultPoint"
+    ],
+    "clearingPoint": "0",
+    "tradeseqId": [
+      "1000008526"
+    ]
+  }
+}
+
+
