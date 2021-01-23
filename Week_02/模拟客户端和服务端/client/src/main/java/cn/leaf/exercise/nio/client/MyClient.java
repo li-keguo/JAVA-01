@@ -27,7 +27,7 @@ import java.util.Scanner;
  */
 public class MyClient {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Executor executor = new Executor();
         executor.addService("okhttp", new OkHttpClientService(), "ok", "o");
         executor.addService("httpclient", new HttpClientService(), "client", "c", "cl");
@@ -158,7 +158,7 @@ public class MyClient {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close()  {
             currentHttpResponse.remove();
         }
     }
@@ -188,7 +188,7 @@ public class MyClient {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close()  {
             Response okHttpResponse = currentResponse.get();
             if (okHttpResponse != null) {
                 okHttpResponse.close();
