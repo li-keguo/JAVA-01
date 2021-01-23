@@ -29,8 +29,8 @@ public class MyClient {
 
     public static void main(String[] args) {
         Executor executor = new Executor();
-        executor.addService("okhttp", new OkHttpClientService(), "ok", "o");
-        executor.addService("httpclient", new HttpClientService(), "client", "c", "cl");
+        executor.addService("okhttp", new OkHttpClientServiceImpl(), "ok", "o");
+        executor.addService("httpclient", new HttpClientServiceImpl(), "client", "c", "cl");
         executor.run();
     }
 
@@ -39,6 +39,7 @@ public class MyClient {
         public final String COMMAND_SPLIT_CODE = " ";
         public final String COMMAND_EXIT = "exit";
         public final String URL_PREFIX = "http://";
+        public final String URL_LOCAL_SIMPLE_PREFIX = ":";
         private Scanner scanner;
 
         /**
@@ -50,7 +51,7 @@ public class MyClient {
          */
         public void addService(String command, HttpRequestService service, String... alias) {
             if (services == null) {
-                services = new HashMap<>();
+                services = new HashMap<>(10);
             }
             services.put(command, service);
             for (String args : alias) {
@@ -106,7 +107,7 @@ public class MyClient {
                 return null;
             }
             String url = userInput.substring(userInput.indexOf(COMMAND_SPLIT_CODE)).trim();
-            if (url.startsWith(":")) {
+            if (url.startsWith(URL_LOCAL_SIMPLE_PREFIX)) {
                 url = "127.0.0.1" + url;
             }
             if (!url.startsWith(URL_PREFIX)) {
@@ -133,7 +134,7 @@ public class MyClient {
         void show() throws IOException;
     }
 
-    static class HttpClientService implements HttpRequestService {
+    static class HttpClientServiceImpl implements HttpRequestService {
         private final HttpClient HTTP_CLIENT = HttpClientBuilder.create().build();
         private final ThreadLocal<HttpResponse> currentHttpResponse = new ThreadLocal<>();
 
@@ -150,20 +151,21 @@ public class MyClient {
                 System.out.println(response.getEntity().getContentLength());
                 InputStream inputStream = response.getEntity().getContent();
                 byte[] bytes = new byte[inputStream.available()];
-                inputStream.read(bytes);
+                int readNumber = inputStream.read(bytes);
                 System.out.println(new String(bytes));
+                System.out.println("response stream byte array count:" + readNumber);
             } else {
                 System.out.println("未有返回结果");
             }
         }
 
         @Override
-        public void close()  {
+        public void close() {
             currentHttpResponse.remove();
         }
     }
 
-    static class OkHttpClientService implements HttpRequestService {
+    static class OkHttpClientServiceImpl implements HttpRequestService {
         private final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
         private final ThreadLocal<Response> currentResponse = new ThreadLocal<>();
 
@@ -188,7 +190,7 @@ public class MyClient {
         }
 
         @Override
-        public void close()  {
+        public void close() {
             Response okHttpResponse = currentResponse.get();
             if (okHttpResponse != null) {
                 okHttpResponse.close();
