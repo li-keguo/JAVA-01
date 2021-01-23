@@ -46,14 +46,14 @@ public class MyClient {
          *
          * @param command 命令
          * @param service 服务
-         * @param alies   别名
+         * @param alias   别名
          */
-        public void addService(String command, HttpRequestService service, String... alies) {
+        public void addService(String command, HttpRequestService service, String... alias) {
             if (services == null) {
                 services = new HashMap<>();
             }
             services.put(command, service);
-            for (String args : alies) {
+            for (String args : alias) {
                 services.put(args, service);
             }
         }
@@ -68,6 +68,7 @@ public class MyClient {
                 String url = getUrl(userInput);
                 if (url == null) {
                     System.out.println("未知的访问地址");
+                    continue;
                 }
                 try (HttpRequestService service = services.get(command)) {
                     if (service != null) {
