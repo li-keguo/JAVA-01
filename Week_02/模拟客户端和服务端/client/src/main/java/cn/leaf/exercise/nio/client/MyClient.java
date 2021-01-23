@@ -8,6 +8,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -148,12 +149,8 @@ public class MyClient {
             HttpResponse response = currentHttpResponse.get();
             if (response != null) {
                 System.out.println(response.getEntity().getContentType());
-                System.out.println(response.getEntity().getContentLength());
-                InputStream inputStream = response.getEntity().getContent();
-                byte[] bytes = new byte[inputStream.available()];
-                int readNumber = inputStream.read(bytes);
-                System.out.println(new String(bytes));
-                System.out.println("response stream byte array count:" + readNumber);
+                System.out.println("content-length: " + response.getEntity().getContentLength());
+                System.out.println(EntityUtils.toString(response.getEntity()));
             } else {
                 System.out.println("未有返回结果");
             }
