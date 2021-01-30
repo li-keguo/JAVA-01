@@ -9,15 +9,15 @@ import java.util.List;
  * @author 李克国
  * @version 1.0.0
  * @project JAVA-01
- * @Date 2021/1/30 15:41
+ * @date 2021/1/30 15:41
  * @description 路由配置
  */
 public class RouterConfig {
 
-    private static final List<HttpEndpointRouter> routes = new ArrayList<>();
+    private static final List<HttpEndpointRouter> ROUTES = new ArrayList<>();
 
     public static String route(String serviceName) {
-        for (HttpEndpointRouter route : routes) {
+        for (HttpEndpointRouter route : ROUTES) {
             String target = route.route(serviceName);
             if (target != null) {
                 return target;
@@ -27,6 +27,6 @@ public class RouterConfig {
     }
 
     public static void registerRouter(HttpEndpointRouter router) {
-        routes.add(router);
+        ROUTES.add(router);
     }
 }

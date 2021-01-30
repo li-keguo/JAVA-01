@@ -42,6 +42,7 @@ public class HttpHandlerUtil {
             response = new GetawayResponse(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.NO_CONTENT));
         } finally {
             try {
+                assert response != null;
                 responsePostProcess(fullRequest, handlerContext, response);
             } catch (IOException e) {
                 log.error("响应后置处理错误", e);

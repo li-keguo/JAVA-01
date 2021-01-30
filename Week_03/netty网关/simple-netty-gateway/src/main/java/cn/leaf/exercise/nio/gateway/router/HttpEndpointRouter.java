@@ -1,8 +1,5 @@
 package cn.leaf.exercise.nio.gateway.router;
 
-import java.util.List;
-import java.util.Properties;
-
 public interface HttpEndpointRouter {
 
 

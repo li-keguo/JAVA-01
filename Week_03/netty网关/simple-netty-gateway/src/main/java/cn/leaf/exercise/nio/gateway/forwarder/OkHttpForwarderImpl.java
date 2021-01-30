@@ -1,12 +1,9 @@
 package cn.leaf.exercise.nio.gateway.forwarder;
 
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 
 /**
  * ok http 实现

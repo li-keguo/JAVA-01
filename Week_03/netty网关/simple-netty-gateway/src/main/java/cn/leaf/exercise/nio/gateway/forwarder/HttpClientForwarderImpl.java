@@ -9,9 +9,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.IOException;
-import java.util.function.Function;
-
 /**
  * httpclent 实现,目前只支持get和post简单请求
  *
