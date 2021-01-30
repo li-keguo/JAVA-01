@@ -1,4 +1,4 @@
-package cn.leaf.exercise.nio.gateway.outbound.netty4;
+package cn.leaf.exercise.nio.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

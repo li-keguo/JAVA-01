@@ -1,4 +1,4 @@
-package cn.leaf.exercise.nio.gateway;
+package cn.leaf.exercise.nio.gateway.util;
 
 import cn.leaf.exercise.nio.gateway.forwarder.GetawayResponse;
 import io.netty.buffer.Unpooled;
@@ -13,13 +13,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
 
 /**
- * TODO
+ * 工具类
  *
  * @author 李克国
  * @version 1.0.0
  * @project JAVA-01
- * @Date 2021/1/30 21:19
- * @description TODO
+ * @date 2021/1/30 21:19
+ * @description 工具类
  */
 @Slf4j
 public class HttpHandlerUtil {
@@ -33,7 +33,7 @@ public class HttpHandlerUtil {
      * @param handlerContext 上下文
      * @param expected       执行器
      */
-    public static void handler(FullHttpRequest fullRequest, ChannelHandlerContext handlerContext, Function<ChannelHandlerContext, GetawayResponse> expected) {
+    public static void handler(HttpRequest fullRequest, ChannelHandlerContext handlerContext, Function<ChannelHandlerContext, GetawayResponse> expected) {
         GetawayResponse response = null;
         try {
             response = expected.apply(handlerContext);
@@ -72,16 +72,19 @@ public class HttpHandlerUtil {
      * @param handlerContext 上下文
      * @param response       响应信息
      */
-    public static void responsePostProcess(FullHttpRequest fullRequest, ChannelHandlerContext handlerContext, GetawayResponse response) throws IOException {
+    public static void responsePostProcess(HttpRequest fullRequest, ChannelHandlerContext handlerContext, GetawayResponse response) throws IOException {
+        HttpResponse httpResponse = response.get();
+        if (httpResponse == null) {
+            return;
+        }
         if (fullRequest != null) {
             if (!HttpUtil.isKeepAlive(fullRequest)) {
-                handlerContext.write(response.get()).addListener(ChannelFutureListener.CLOSE);
+                handlerContext.write(httpResponse).addListener(ChannelFutureListener.CLOSE);
             } else {
-                assert response != null;
-                HttpResponse httpResponse = response.get();
                 httpResponse.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
                 handlerContext.write(httpResponse);
             }
         }
+        handlerContext.flush();
     }
 }

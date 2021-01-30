@@ -32,6 +32,9 @@ public class GetawayResponse {
     private Response okResponse;
     private org.apache.http.HttpResponse httpResponse;
 
+    public GetawayResponse() {
+    }
+
     public GetawayResponse(HttpResponse nettyResponse) {
         this.nettyResponse = nettyResponse;
     }

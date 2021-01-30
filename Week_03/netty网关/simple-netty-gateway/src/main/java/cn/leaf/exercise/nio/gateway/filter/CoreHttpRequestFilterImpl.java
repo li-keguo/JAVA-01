@@ -1,11 +1,9 @@
 package cn.leaf.exercise.nio.gateway.filter;
 
-import cn.leaf.exercise.nio.gateway.HttpHandlerUtil;
+import cn.leaf.exercise.nio.gateway.util.HttpHandlerUtil;
 import cn.leaf.exercise.nio.gateway.forwarder.GetawayResponse;
 import cn.leaf.exercise.nio.gateway.forwarder.HttpForwarder;
 import cn.leaf.exercise.nio.gateway.router.RouterConfig;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
 import io.netty.util.ReferenceCountUtil;
@@ -13,16 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.function.Function;
 
 
 /**
