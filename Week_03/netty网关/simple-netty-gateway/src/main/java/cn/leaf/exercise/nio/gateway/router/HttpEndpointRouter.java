@@ -1,11 +1,19 @@
 package cn.leaf.exercise.nio.gateway.router;
 
 import java.util.List;
+import java.util.Properties;
 
 public interface HttpEndpointRouter {
-    
-    String route(List<String> endpoints);
-    
+
+
+    /**
+     * 路由：给出服务名，返回指定的服务地址
+     *
+     * @param endpoints 服务名 例如：{baidu,b,baidu-search}
+     * @return 服务地址 例如：www.baidu.com:80
+     */
+    String route(String endpoints);
+
     // Load Balance
     // Random
     // RoundRibbon 
@@ -13,5 +21,5 @@ public interface HttpEndpointRouter {
     // - server01,20
     // - server02,30
     // - server03,50
-    
+
 }

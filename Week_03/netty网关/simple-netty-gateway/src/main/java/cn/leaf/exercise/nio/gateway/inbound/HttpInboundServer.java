@@ -21,15 +21,13 @@ public class HttpInboundServer implements Closeable {
 
     private final int port;
 
-    private final String proxyServer;
 
     private EventLoopGroup bossGroup;
     private EventLoopGroup workerGroup;
     private ServerBootstrap bootstrap;
 
-    public HttpInboundServer(int port, String proxyServer) {
+    public HttpInboundServer(int port) {
         this.port = port;
-        this.proxyServer = proxyServer;
     }
 
     public void run() throws Exception {
@@ -49,7 +47,7 @@ public class HttpInboundServer implements Closeable {
                 .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                .childHandler(new HttpInboundInitializer(this.proxyServer));
+                .childHandler(new HttpInboundInitializer());
 
         Channel ch = bootstrap.bind(port).sync().channel();
         logger.info("开启netty http服务器，监听地址和端口为 http://127.0.0.1:" + port + '/');
