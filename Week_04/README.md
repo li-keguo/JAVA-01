@@ -48,3 +48,9 @@ cn.leaf.exercise.multithreading.WaitResultDemo$WaitResultImpl10 result :1
 cn.leaf.exercise.multithreading.WaitResultDemo$WaitResultImpl11 result :1
 ```
 
+多线程脑图如下：
+
+![](https://raw.githubusercontent.com/li-keguo/JAVA-01/main/Week_04/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B.png)
+
+多线程这块学的还不够理想，本周工作忙，作业完成不是很满意，后续继续完善
+
