@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--  装配无属性的 bean  -->
+    <bean class="cn.leaf.exercise.assembled.xml.XmlNoPropertiesBean"/>
+    <!--  声明一个 xml bean  的属性  -->
+    <bean id="cn.leaf.exercise.spring_bean.common.XmlBeanProperties"
+          class="cn.leaf.exercise.assembled.common.XmlBeanProperties" init-method="initialize"/>
+    <!--  装配一个有属性的 xml bean  -->
+    <bean class="cn.leaf.exercise.assembled.xml.XmlConstructPropertiesBean">
+        <constructor-arg name="properties" ref="cn.leaf.exercise.spring_bean.common.XmlBeanProperties"/>
+    </bean>
+</beans>

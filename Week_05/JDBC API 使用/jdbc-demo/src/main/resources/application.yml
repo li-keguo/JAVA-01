@@ -1,0 +1,16 @@
+spring:
+  #  resources:
+  #    static-locations: /
+  datasource:
+    #    password: 123123
+    #    password: 123
+    password: p/q2-q4
+    username: root
+    #    url: jdbc:mysql://192.168.31.100:3306/test?useSSL=false&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true&autoReconnect=true
+    url: jdbc:mysql://47.100.25.221:3306/king?useSSL=false&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true # &autoReconnect=true
+    #    url: jdbc:mysql://127.0.0.1:3306/king?useSSL=false&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true # &autoReconnect=true
+    #    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
