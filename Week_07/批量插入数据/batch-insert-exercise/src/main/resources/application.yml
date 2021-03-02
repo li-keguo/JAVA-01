@@ -1,0 +1,9 @@
+spring:
+  #  resources:
+  #    static-locations: /
+  datasource:
+
+
+logging:
+  level:
+    cn.leaf.exercise.*: DEBUG
