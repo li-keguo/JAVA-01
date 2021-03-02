@@ -11,8 +11,7 @@ import java.util.List;
  *
  * @author 李克国
  * @version 1.0.0
- * @project px-settlement-tieline-tradedata
- * @Date 2020/9/25 9:24
+
  * @description 通用Mapper扩展
  * @see NewMySqlProvider
  */

@@ -16,8 +16,6 @@ import java.util.Set;
  *
  * @author 李克国
  * @version 1.0.0
- * @project px-settlement-tieline-tradedata
- * @Date 2020/9/24 17:34
  * @description 自定义新的MySQL通用mapper提供者
  */
 public class NewMySqlProvider extends MapperTemplate {
