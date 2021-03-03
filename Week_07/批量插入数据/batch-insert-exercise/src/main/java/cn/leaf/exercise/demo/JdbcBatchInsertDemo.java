@@ -102,7 +102,10 @@ public class JdbcBatchInsertDemo {
         List<List<Object[]>> valuesObjectsSplit = CollectionUtil.split(valuesObjects, 100000);
         parallel(this::jdbcBatchInsert, valuesObjectsSplit, "primitiveJdbc 并行插入", 10);
     }
-
+    /**
+     * mybatis插入 插入 1 000 000 订单记录
+     *
+     */
     public void mybatisInset() {
         log.info("mybatis开始");
         long startTime = System.currentTimeMillis();
@@ -115,10 +118,12 @@ public class JdbcBatchInsertDemo {
         long consumeTime = System.currentTimeMillis() - startTime;
         log.info("myBatis 但线程  批处理：插入{}订单数据消耗时长为{}ms ({}s) ", CRITICAL_VALUE, consumeTime, consumeTime / 1000);
 
-
     }
-
-
+    /**
+     * mybatis 批处理插入 插入 1 000 000 订单记录 （10线程并行插入）
+     *
+     * @throws InterruptedException InterruptedException
+     */
     public void mybatisParallelInsertDemo() throws InterruptedException {
         List<List<XmShoppingOrder>> split = CollectionUtil.split(orders, CRITICAL_VALUE / 10);
         parallel(list -> {
