@@ -1,4 +1,4 @@
-package cn.leaf.exercise.exercise;
+package cn.leaf.exercise.support;
 
 import cn.hutool.core.collection.ListUtil;
 import org.apache.ibatis.mapping.MappedStatement;

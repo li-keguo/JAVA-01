@@ -1,4 +1,4 @@
-package cn.leaf.exercise.exercise;
+package cn.leaf.exercise.support;
 
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Options;
@@ -11,7 +11,6 @@ import java.util.List;
  *
  * @author 李克国
  * @version 1.0.0
-
  * @description 通用Mapper扩展
  * @see NewMySqlProvider
  */
