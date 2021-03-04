@@ -1,0 +1,32 @@
+spring:
+  # default data source is master node
+  datasource:
+    name: master
+    password: xxx
+    username: xxx
+    url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true # &autoReconnect=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  level:
+    cn.leaf.exercise.*: DEBUG
+# multi-data-source config example
+multi-data-source:
+  slaves:
+    slave-1:
+      name: slave-1
+      password: xxx
+      username: xxx
+      url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    slave-2:
+      name: slave-2
+      password: xxx
+      username: xxx
+      url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    slave-3:
+      name: slave-3
+      password: xxx
+      username: xxx
+      url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+      driver-class-name: com.mysql.cj.jdbc.Driver
