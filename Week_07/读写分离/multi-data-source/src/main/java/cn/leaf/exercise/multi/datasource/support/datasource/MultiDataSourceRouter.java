@@ -1,6 +1,5 @@
 package cn.leaf.exercise.multi.datasource.support.datasource;
 
-import cn.hutool.core.util.ClassUtil;
 import cn.leaf.exercise.multi.datasource.config.SlaveDataSourceProperties;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
+import java.io.Closeable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,11 +25,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 @RequiredArgsConstructor
-public class MultiDataSourceRouter extends AbstractRoutingDataSource {
+public class MultiDataSourceRouter extends AbstractRoutingDataSource implements Closeable {
 
     private final SlaveDataSourceProperties slavesProperties;
 
     private Map<String, DataSource> dataSourceMapping;
+
     private ThreadLocal<String> currentDataSource;
 
     @PostConstruct
@@ -69,7 +70,16 @@ public class MultiDataSourceRouter extends AbstractRoutingDataSource {
         return currentDataSource.get();
     }
 
+    public DataSource getDataSource(String name) {
+        return dataSourceMapping.get(name);
+    }
+
     public void switchDataSource(String dataSourceName) {
         currentDataSource.set(dataSourceName);
+    }
+
+    @Override
+    public void close() {
+        currentDataSource.remove();
     }
 }
