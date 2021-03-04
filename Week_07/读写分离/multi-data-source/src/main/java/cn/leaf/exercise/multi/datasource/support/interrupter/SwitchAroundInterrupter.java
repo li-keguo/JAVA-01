@@ -32,16 +32,16 @@ public class SwitchAroundInterrupter {
     private final MultiDataSourceRouter dataSourceRouter;
 
     @Pointcut("@annotation(cn.leaf.exercise.multi.datasource.support.annotation.Switch)")
-    public void userAccess() {
+    public void target() {
     }
 
-    @Around(value = "@within(switchs) || " + "@annotation(switchs)")
-    public Object verifyRoleExecuteCommand(ProceedingJoinPoint pjp, Switch switchs) throws Throwable {
+    @Around(value = "@within(sh) || " + "@annotation(sh)")
+    public Object verifyRoleExecuteCommand(ProceedingJoinPoint pjp, Switch sh) throws Throwable {
         String dataSource = dataSourceRouter.getDataSource();
-        log.debug("原始数据源 {}，本次执行使用数据源 {};执行开始", dataSource, switchs.dataSources());
-        dataSourceRouter.switchDataSource(switchs.dataSources());
+        log.debug("原始数据源 {}，本次执行使用数据源 {};执行开始", dataSource, sh.dataSources());
+        dataSourceRouter.switchDataSource(sh.dataSources());
         Object result = pjp.proceed();
-        log.debug("原始数据源 {}，本次执行使用数据源 {};执行完毕，将切回原数据源 {}", dataSource, switchs.dataSources(), dataSource);
+        log.debug("原始数据源 {}，本次执行使用数据源 {};执行完毕，将切回原数据源 {}", dataSource, sh.dataSources(), dataSource);
         dataSourceRouter.switchDataSource(dataSource);
         return result;
     }
