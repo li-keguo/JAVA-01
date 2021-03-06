@@ -1,0 +1,30 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: primary_xm,slave-1
+      primary_xm:
+        jdbc-url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        password: xxx
+        username: root
+      slave-1:
+        jdbc-url: jdbc:mysql://xxx.xxx.xxx.xxx:xxx/xxx-slave-01?useSSL=false&rewriteBatchedStatements=true&serverTimezone=Hongkong&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        password: xxx
+        username: root
+    rules:
+      replica-query:
+        data-sources:
+          pr_ds:
+            primary-data-source-name: primary_xm
+            replica-data-source-names: slave-1
+            load-balancer-name: round_robin
+        load-balancers:
+          round-robin:
+            type: ROUND_ROBIN
+
+logging:
+  level:
+    cn.leaf.exercise.*: DEBUG
