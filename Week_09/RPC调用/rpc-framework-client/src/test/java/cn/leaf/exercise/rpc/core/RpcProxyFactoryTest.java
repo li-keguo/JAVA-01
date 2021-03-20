@@ -1,8 +1,8 @@
 package cn.leaf.exercise.rpc.core;
 
+import cn.leaf.exercise.rpc.clent.RpcProxyFactory;
+import cn.leaf.exercise.rpc.core.invoker.MockRpcInvokerImpl;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RpcProxyFactoryTest {
     
@@ -19,9 +19,12 @@ class RpcProxyFactoryTest {
         TestService testService = proxyFactory.newInstance(rpcProxy);
         String test = testService.test();
         System.out.println(test);
+        testService.testVoid();
     }
 
     interface TestService{
         String test();
+
+        void testVoid();
     }
 }

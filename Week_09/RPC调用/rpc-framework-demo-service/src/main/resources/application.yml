@@ -1,0 +1,13 @@
+spring:
+  #  resources:
+  #    static-locations: /
+  datasource:
+    url: jdbc:mysql://47.100.25.221:3306/x-mall?serverTimezone=UTC&characterEncoding=utf8&useUnicode=true&useSSL=true
+    username: root
+    password: p/q2-q4
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+logging:
+  level:
+    cn.leaf.exercise.*: trace

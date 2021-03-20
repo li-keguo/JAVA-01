@@ -1,5 +1,6 @@
-package cn.leaf.exercise.rpc.core;
+package cn.leaf.exercise.rpc.clent;
 
+import cn.leaf.exercise.rpc.core.RpcProxy;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

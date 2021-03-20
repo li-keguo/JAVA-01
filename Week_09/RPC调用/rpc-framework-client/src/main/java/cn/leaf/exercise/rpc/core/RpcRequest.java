@@ -16,6 +16,8 @@ public class RpcRequest {
 
     private String serviceName;
 
+    private String method;
+
     private Class<?> ServiceInterface;
 
     private Object[] args;

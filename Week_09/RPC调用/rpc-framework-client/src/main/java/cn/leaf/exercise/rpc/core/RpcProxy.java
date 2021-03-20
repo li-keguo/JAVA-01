@@ -1,7 +1,11 @@
 package cn.leaf.exercise.rpc.core;
 
+import cn.hutool.core.convert.Convert;
+import cn.leaf.exercise.rpc.core.filter.RpcFilter;
+import cn.leaf.exercise.rpc.core.invoker.RpcInvoker;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -13,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author 李克国
  * @date 2021/3/19
  */
+@Slf4j
 @RequiredArgsConstructor
 public class RpcProxy<T> implements InvocationHandler, Serializable {
 
@@ -33,6 +38,7 @@ public class RpcProxy<T> implements InvocationHandler, Serializable {
         }
         RpcRequest request = RpcRequest.builder()
                 .url(serviceDefinition.getUrl())
+                .method(method.getName())
                 .args(args)
                 .build();
         boolean isPass = true;
@@ -43,9 +49,17 @@ public class RpcProxy<T> implements InvocationHandler, Serializable {
         }
         if (isPass) {
             //  appoint to invoker
-            return invoker.invoke(request);
+            RpcResponse response = invoker.invoke(request);
+            if (response.getThrowable() != null) {
+                log.error("rpc exception: remote method [{}] execute exception", method.getName());
+                throw response.getThrowable();
+            }
+            if (method.getReturnType().getName().equals("void")) {
+                return null;
+            }
+            return Convert.convert(method.getReturnType(), response.getBody());
         }
-        return RpcResponse.empty();
+        return null;
     }
 
     public void addFilter(RpcFilter filter) {

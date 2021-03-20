@@ -11,5 +11,9 @@ public class RpcServiceDefinition<T> {
 
     private String url;
 
+    private String id;
+
+    private String name;
+
     private Class<T> clazz;
 }

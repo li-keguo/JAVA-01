@@ -1,8 +1,9 @@
-package cn.leaf.exercise.rpc.core;
+package cn.leaf.exercise.rpc.core.invoker;
 
+import cn.leaf.exercise.rpc.core.RpcRequest;
+import cn.leaf.exercise.rpc.core.RpcResponse;
 import com.alibaba.fastjson.JSONArray;
 import lombok.SneakyThrows;
-import netscape.javascript.JSObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,7 +12,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
