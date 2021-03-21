@@ -1,0 +1,26 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /
+  address: 0.0.0.0
+spring:
+    datasource:
+        driver-class-name:  com.cj.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/hmily_bank?useUnicode=true&characterEncoding=utf8
+        username: root
+        password:
+
+mybatis:
+  type-aliases-package: cn.leaf.exercise.dubbo.hmily.mapper
+  config-location: classpath:mybatis/mybatis-config.xml
+
+logging:
+    level:
+        root: error
+        org.springframework.web: info
+        org.apache.ibatis: debug
+        org.dromara.hmily.demo.bonuspoint: debug
+        org.dromara.hmily.demo.lottery: debug
+        org.dromara.hmily.demo: debug
+    path: "./logs"
+
