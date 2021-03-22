@@ -94,7 +94,7 @@ public class SimpleAccountServiceImpl implements AccountService {
         return true;
     }
     @Transactional(rollbackFor = Exception.class)
-    @HmilyTCC(confirmMethod = "confirm", cancelMethod = "cancel")
+    @HmilyTCC(confirmMethod = "payConfirm", cancelMethod = "payCancel")
     @Override
     public boolean pay(Account account) {
         AccountPO accountPO = accountMapper.selectByPrimaryKey(account.getAccount());
@@ -132,6 +132,7 @@ public class SimpleAccountServiceImpl implements AccountService {
         return true;
     }
     @Transactional(rollbackFor = Exception.class)
+    @HmilyTCC(confirmMethod = "depositConfirm", cancelMethod = "depositCancel")
     @Override
     public boolean deposit(Account account) {
         AccountPO accountPO = accountMapper.selectByPrimaryKey(account.getAccount());
