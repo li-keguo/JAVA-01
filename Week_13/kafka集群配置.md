@@ -47,7 +47,8 @@
 - linux (OS)
 - docker
 - java （JDK 1.8）
-- 
+- zk
+
 
 #### 安装过程
 

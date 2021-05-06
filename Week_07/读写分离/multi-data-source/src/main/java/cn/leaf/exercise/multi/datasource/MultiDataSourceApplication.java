@@ -5,6 +5,7 @@ import cn.leaf.exercise.multi.datasource.demo.SwitchDataSourceDemo;
 import cn.leaf.exercise.multi.datasource.repository.mapper.XmShoppingOrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -38,7 +39,9 @@ public class MultiDataSourceApplication implements ApplicationRunner {
         properties.getSlaves().forEach((k, v) -> log.debug("slave data-source: {}  {}", k, v.getName()));
         // 使用 @Switch 选择执行数据库
         demo.annotationSwitchSlave1();
-        // 使用代码切换数据源执行
-        demo.codeSwitchSlave1();
+//        // 使用代码切换数据源执行
+//        demo.codeSwitchSlave1();
+//        demo.flush();
+
     }
 }
