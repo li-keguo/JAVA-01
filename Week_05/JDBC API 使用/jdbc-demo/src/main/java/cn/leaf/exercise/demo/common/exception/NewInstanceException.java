@@ -1,4 +1,4 @@
-package cn.leaf.exercise.jdbc.common.exception;
+package cn.leaf.exercise.demo.common.exception;
 
 /**
  * @author com.karl lee
