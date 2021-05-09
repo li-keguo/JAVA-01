@@ -10,15 +10,28 @@ import lombok.*;
  * @date 2021/4/26 19:43
  */
 @Data
-@Builder
+//@Builder
 //@AllArgsConstructor
 @RequiredArgsConstructor
 public class FmqTopic implements FmqDataKey {
+
     private final String topicName;
+
+
+    private volatile boolean running;
 
     @Override
     public String getKey() {
         return topicName;
     }
-    // 是否在此存储 message list ？
+
+    @Override
+    public void start() {
+        running = true;
+    }
+
+    @Override
+    public void stop() {
+        running = false;
+    }
 }

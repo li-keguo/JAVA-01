@@ -4,6 +4,7 @@ import cn.leaf.freemq.model.FmqDataKey;
 import cn.leaf.freemq.model.FmqTopic;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,6 +31,14 @@ public class TopicPoolImpl implements TopicPool {
     }
 
     @Override
+    public FmqDataKey getDataKey(String keyId) {
+        if (POOL.containsKey(key(keyId))) {
+            return POOL.get(key(keyId)).keyInfo();
+        }
+        throw new NoSuchElementException(keyId+" the dataKey is not found");
+    }
+
+    @Override
     public boolean contains(FmqDataKey key) {
         return POOL.containsKey(key(key));
     }
@@ -41,6 +50,10 @@ public class TopicPoolImpl implements TopicPool {
 
     private String key(FmqDataKey key) {
         return TOPIC_PREFIX + key.getKey();
+    }
+
+    private String key(String key) {
+        return TOPIC_PREFIX + key;
     }
 
     private TopicQueue topicQueue(FmqTopic topic) {

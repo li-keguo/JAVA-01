@@ -1,0 +1,18 @@
+
+
+
+### add
+POST http://localhost:8080/test/topic/add/test
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
+
+
+
+### send
+POST http://localhost:8080/test/send/test/test
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json; charset=UTF-8
+
+

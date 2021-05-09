@@ -23,4 +23,9 @@ public interface FmqProducer extends PoolConnectable {
      */
     boolean send(FmqDataKey dataKey, FmqMessage<?> message);
 
+    /**
+     * destroy
+     */
+
+    void destroy();
 }

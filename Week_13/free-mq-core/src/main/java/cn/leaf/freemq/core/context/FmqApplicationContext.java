@@ -6,6 +6,9 @@ import cn.leaf.freemq.core.pool.FmqPool;
 import cn.leaf.freemq.core.pool.PoolConnectable;
 import cn.leaf.freemq.core.producer.FmqProducer;
 import cn.leaf.freemq.core.register.RegisterManager;
+import org.springframework.context.Lifecycle;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  * application context
@@ -14,10 +17,10 @@ import cn.leaf.freemq.core.register.RegisterManager;
  * @version 1.0.0
  * @date 2021/4/28 15:23
  */
-public interface FmqApplicationContext extends PoolConnectable {
+public interface FmqApplicationContext extends PoolConnectable, Lifecycle {
 
     /**
-     * get message pool
+     * get message pool hotel california
      *
      * @return message pool
      */
@@ -56,4 +59,18 @@ public interface FmqApplicationContext extends PoolConnectable {
      * initialize
      */
     void initialize();
+
+    /**
+     * is start
+     *
+     * @return is start
+     */
+    boolean isStart();
+
+    /**
+     * ThreadFactory
+     *
+     * @return ThreadFactory
+     */
+    ThreadFactory threadFactory();
 }

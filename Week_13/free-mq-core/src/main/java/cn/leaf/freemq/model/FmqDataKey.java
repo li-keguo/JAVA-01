@@ -1,5 +1,7 @@
 package cn.leaf.freemq.model;
 
+import org.springframework.context.Lifecycle;
+
 /**
  * TODO
  *
@@ -8,7 +10,7 @@ package cn.leaf.freemq.model;
  * @project free-mq
  * @date 2021/4/28 11:13
  */
-public interface FmqDataKey {
+public interface FmqDataKey extends Lifecycle {
 
     /**
      * key

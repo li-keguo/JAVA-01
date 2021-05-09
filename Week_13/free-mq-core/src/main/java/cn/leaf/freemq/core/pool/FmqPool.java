@@ -13,6 +13,7 @@ public interface FmqPool {
 
     /**
      * 是否存在
+     *
      * @param key key
      * @return is contains
      */
@@ -20,13 +21,23 @@ public interface FmqPool {
 
     /**
      * add key
+     *
      * @param key key
      * @return is success
      */
     boolean add(FmqDataKey key);
 
     /**
+     * get key
+     *
+     * @param keyId keyId
+     * @return key
+     */
+    FmqDataKey getDataKey(String keyId);
+
+    /**
      * 获取消息队列
+     *
      * @param key key
      * @return queue
      */
