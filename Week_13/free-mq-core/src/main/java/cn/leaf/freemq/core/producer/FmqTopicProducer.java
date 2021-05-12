@@ -33,7 +33,7 @@ public class FmqTopicProducer implements FmqProducer {
 
     @Override
     public boolean send(FmqDataKey dataKey, FmqMessage<?> message) {
-        if (pool == null) {
+        if (pool == null || applicationContext.getFmqMessagePool() == null) {
             throw new FmqPoolNotFoundExeption("message queue pool is not connection ");
         }
         // dataKey is not found
@@ -41,6 +41,16 @@ public class FmqTopicProducer implements FmqProducer {
             log.warn("producer send message to topic [{}] , but it not found topic", dataKey.getKey());
             return false;
         }
+        sendToQueue(dataKey, message);
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+    private void sendToQueue(FmqDataKey dataKey, FmqMessage<?> message) {
         MessageQueue messageQueue = pool.getMessageQueue(dataKey);
 
         messageQueue.push(message);
@@ -48,10 +58,9 @@ public class FmqTopicProducer implements FmqProducer {
         // TODO 原子性问题
 
         // TODO publish event
-        EventManager eventManager = applicationContext.getEventManager();
+//        EventManager eventManager = applicationContext.getEventManager();
 
-        eventManager.publish(new MessagePublishFmqEvent(applicationContext, dataKey));
+//        eventManager.publish(new MessagePublishFmqEvent(applicationContext, dataKey));
         log.info("producer send message to topic [{}]", dataKey.getKey());
-        return true;
     }
 }

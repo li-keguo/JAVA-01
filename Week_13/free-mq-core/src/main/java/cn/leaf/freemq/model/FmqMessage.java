@@ -24,4 +24,8 @@ public class FmqMessage<T> {
     private Map<String,Object> headers;
 
     private T body;
+
+    public FmqMessage(T body) {
+        this.body = body;
+    }
 }
