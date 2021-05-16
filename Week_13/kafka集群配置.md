@@ -52,3 +52,54 @@
 
 #### 安装过程
 
+下载
+
+```http
+http://kafka.apache.org/downloads.html
+```
+
+解压
+
+启动zk
+
+```dash
+zookeeper-server-start.sh config/zookeeper.properties
+```
+
+启动kafka
+
+```
+kafka-server-start.sh config/server.properties
+```
+
+至此，kafka安装完成，下面将进行集群配置（伪集群，单机操作）
+
+复制多份server.properties
+
+```
+server.properties
+       broker.id=0
+       listeners=PLAINTEXT://:9092
+       log.dirs=/tmp/kafka-logs-0
+       
+server_1.properties
+       broker.id=1
+       listeners=PLAINTEXT://:9093
+       log.dirs=/tmp/kafka-logs-1
+
+server_2.properties
+       broker.id=2
+       listeners=PLAINTEXT://:9094
+       log.dirs=/tmp/kafka-logs-2
+```
+
+启动多个kafka
+
+```
+bin/kafka-server-start.sh config/server.properties
+bin/kafka-server-start.sh config/server_1.properties
+bin/kafka-server-start.sh config/server_2.properties
+```
+
+kafka集群配置完成，真实使用时，将配置文件在不同机器上修改配置启动即可
+
