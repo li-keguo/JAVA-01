@@ -14,6 +14,7 @@ import lombok.Data;
 public class CommandParamWrapper {
   private Field field;
   private CommandParam annotation;
+  private Object value=null;
 
 
 

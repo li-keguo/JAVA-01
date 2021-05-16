@@ -1,8 +1,5 @@
 package cn.leaf.freemq.core.plug.command.exception;
 
-import javafx.beans.NamedArg;
-import jdk.nashorn.internal.runtime.logging.Logger;
-import lombok.Data;
 import lombok.Getter;
 
 /**

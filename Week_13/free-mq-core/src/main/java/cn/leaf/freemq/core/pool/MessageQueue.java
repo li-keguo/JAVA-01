@@ -35,4 +35,11 @@ public interface MessageQueue {
      * @return message
      */
     FmqMessage<?> poll();
+
+    /**
+     * size
+     *
+     * @return size
+     */
+    Integer size();
 }

@@ -36,8 +36,7 @@ public class CommandParser<T> {
     if (processor == null) {
       throw new NoSuchCommandException(commandName);
     }
-    Class<? extends CommandProcessor<T>> processorClazz = (Class<? extends CommandProcessor<T>>) (processor
-        .getClass());
+    Class<? extends CommandProcessor<T>> processorClazz = (Class<? extends CommandProcessor<T>>) (processor.getClass());
 
     try {
       CommandProcessor<T> processorInstance = getDefaultConstructor(processorClazz).newInstance();
@@ -60,12 +59,22 @@ public class CommandParser<T> {
         }
         injectCommandValue(iterator, wrapperMap, processorInstance, commandName, next, false);
       }
+      checkNotOptionalParam(wrapperMap,commandName);
       return Optional.of(processorInstance);
     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
       e.printStackTrace();
     }
     return Optional.empty();
   }
+
+  void checkNotOptionalParam(Map<String, CommandParamWrapper> wrapperMap,String commandName){
+    for (CommandParamWrapper value : wrapperMap.values()) {
+      if(!value.getAnnotation().isOptional()&&value.getValue()==null){
+        throw  new ParamNoValueException(commandName,value.getAnnotation().name());
+      }
+    }
+  }
+
 
   void injectCommandValue(Iterator<String> iterator, Map<String, CommandParamWrapper> wrapperMap,
       CommandProcessor<T> processorInstance, String commandName, String paramName,
@@ -76,29 +85,34 @@ public class CommandParser<T> {
     if (hasParamName) {
       paramWrapper = wrapperMap.get(paramName.substring(1));
     }
+    if(paramWrapper==null){
+      return;
+    }
     int valueCount = paramWrapper.getAnnotation().valueCount();
     Field field = paramWrapper.getField();
     field.setAccessible(true);
     if (valueCount == 1) {
-      injectSingleValue(field, processorInstance, iterator, commandName, paramName, hasParamName);
-      return;
+      Object o = injectSingleValue(field, processorInstance, iterator, commandName, paramName, hasParamName);
+      paramWrapper.setValue(o);
+      return ;
     }
-    injectMultipleValue(field, valueCount, iterator, commandName, paramName, processorInstance,
+    Object injectValue =  injectMultipleValue(field, valueCount, iterator, commandName, paramName, processorInstance,
         hasParamName);
-
+    paramWrapper.setValue(injectValue);
   }
 
-  private void injectSingleValue(Field field, CommandProcessor<T> processorInstance,
+  private Object injectSingleValue(Field field, CommandProcessor<T> processorInstance,
       Iterator<String> iterator, String commandName, String paramName, boolean hasParamName)
       throws IllegalAccessException {
     if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
       field.set(processorInstance, true);
-      return;
+      return true;
     }
     if (!hasParamName) {
-      field.set(processorInstance, field.getType().equals(String.class) ? paramName
-          : convert(field.getType(), paramName, commandName, paramName));
-      return;
+      Object paramV = field.getType().equals(String.class) ? paramName
+              : convert(field.getType(), paramName, commandName, paramName);
+      field.set(processorInstance,paramV);
+      return paramV;
     }
 
     if (!iterator.hasNext()) {
@@ -108,8 +122,10 @@ public class CommandParser<T> {
     if (paramValue.startsWith(COMMAND_PARAM_PREFIX)) {
       throw new ParamNoValueException(commandName, paramValue);
     }
-    field.set(processorInstance, field.getType().equals(String.class) ? paramValue
-        : convert(field.getType(), paramValue, commandName, paramName));
+    Object  paramV =field.getType().equals(String.class) ? paramValue
+            : convert(field.getType(), paramValue, commandName, paramName);
+    field.set(processorInstance,paramV);
+    return paramV;
   }
 
   /**
@@ -140,7 +156,7 @@ public class CommandParser<T> {
    * @param hasParamName      当前注入字段是否有参数名称
    * @throws IllegalAccessException IllegalAccessException
    */
-  private void injectMultipleValue(Field field, Integer valueCount, Iterator<String> iterator,
+  private Object injectMultipleValue(Field field, Integer valueCount, Iterator<String> iterator,
       String commandName, String paramName, CommandProcessor<T> processorInstance,
       boolean hasParamName)
       throws IllegalAccessException {
@@ -171,8 +187,7 @@ public class CommandParser<T> {
           : convert(genericType, paramValue, commandName, paramName));
     }
     field.set(processorInstance, paramValues);
-
-
+    return paramValues;
   }
 
   /**
@@ -242,7 +257,7 @@ public class CommandParser<T> {
 
     for (Field declaredField : collect) {
       CommandParam annotation = declaredField.getAnnotation(CommandParam.class);
-      CommandParamWrapper wrapper = new CommandParamWrapper(declaredField, annotation);
+      CommandParamWrapper wrapper = new CommandParamWrapper(declaredField, annotation,null);
       fieldMap.put(annotation.name(), wrapper);
       String[] alias = annotation.alias();
       for (String s : alias) {

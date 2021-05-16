@@ -69,6 +69,10 @@ class TestCommand implements CommandProcessor<String> {
     return "test";
   }
 
+  @Override
+  public String getCommandHelpInfo() {
+    return null;
+  }
 
 
 }

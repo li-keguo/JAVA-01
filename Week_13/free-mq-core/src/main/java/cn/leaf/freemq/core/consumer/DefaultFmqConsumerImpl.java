@@ -47,7 +47,17 @@ public class DefaultFmqConsumerImpl implements FmqConsumer {
         applicationContext.threadFactory().newThread(() -> {
             log.info("consumer listen to dataKey [{}] running", currentDataKey.getKey());
             while (applicationContext.isStart() && currentDataKey.isRunning()) {
-                poll(currentDataKey, messageQueue);
+                synchronized (messageQueue) {
+                    poll(currentDataKey, messageQueue);
+                    if (messageQueue.size() <= 0) {
+                        try {
+                            messageQueue.wait();
+                        } catch (InterruptedException e) {
+                            log.info("consumer InterruptedException:listen to dataKey [{}] ", currentDataKey.getKey());
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
             log.info("consumer listen to dataKey [{}] shutdown", currentDataKey.getKey());
         }).start();

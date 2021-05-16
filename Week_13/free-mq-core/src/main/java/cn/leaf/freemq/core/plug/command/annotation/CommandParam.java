@@ -24,4 +24,5 @@ public @interface CommandParam {
   String[] alias() default {};
   boolean isHelp() default  false;
   String helpInfo() default "";
+  boolean isOptional() default true;
 }

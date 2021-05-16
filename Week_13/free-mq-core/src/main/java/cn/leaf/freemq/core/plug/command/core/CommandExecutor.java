@@ -14,11 +14,15 @@ public class CommandExecutor<T> {
   private final Map<String, CommandProcessor<T>> processorMap;
   private final CommandParser<T> commandParser;
   private final T applicationContext;
+  private final HashMap<String,String> applicationHelpInfo;
+
+
 
   public CommandExecutor(T applicationContext) {
     this.processorMap = new HashMap<>();
     this.commandParser = new CommandParser<T>();
     this.applicationContext = applicationContext;
+    this.applicationHelpInfo = new HashMap<>();
   }
 
   /**
@@ -28,7 +32,11 @@ public class CommandExecutor<T> {
    */
   public void execute(String command) {
     Optional<CommandProcessor<T>> parse = commandParser.parse(command, processorMap);
-    parse.ifPresent(processor -> processor.process(applicationContext));
+    parse.ifPresent(processor -> {
+      processor.awareExecutor(this);
+      processor.process(applicationContext);
+
+    });
   }
 
   /**
@@ -39,7 +47,13 @@ public class CommandExecutor<T> {
    */
   public CommandExecutor<T> addCommandProcessor(CommandProcessor<T> processor) {
     processorMap.put(processor.getName(), processor);
+    applicationHelpInfo.put(processor.getName(),processor.getCommandHelpInfo());
     return this;
   }
 
+
+
+  public HashMap<String, String> getApplicationHelpInfo() {
+    return applicationHelpInfo;
+  }
 }

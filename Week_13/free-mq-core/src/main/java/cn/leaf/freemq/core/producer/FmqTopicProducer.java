@@ -52,8 +52,10 @@ public class FmqTopicProducer implements FmqProducer {
 
     private void sendToQueue(FmqDataKey dataKey, FmqMessage<?> message) {
         MessageQueue messageQueue = pool.getMessageQueue(dataKey);
-
-        messageQueue.push(message);
+        synchronized (messageQueue) {
+            messageQueue.push(message);
+            messageQueue.notifyAll();
+        }
 
         // TODO 原子性问题
 

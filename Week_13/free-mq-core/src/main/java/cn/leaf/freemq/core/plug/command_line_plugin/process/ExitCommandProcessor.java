@@ -17,4 +17,9 @@ public class ExitCommandProcessor implements CommandProcessor<FmqBroker> {
   public String getName() {
     return "exit";
   }
+
+  @Override
+  public String getCommandHelpInfo() {
+    return "exit command line";
+  }
 }

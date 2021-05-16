@@ -11,7 +11,7 @@ import cn.leaf.freemq.model.FmqTopic;
  */
 public class AddTopicCommandProcessor implements CommandProcessor<FmqBroker> {
 
-  @CommandParam(name="")
+  @CommandParam(name="",isOptional = false)
   private String topic;
   @Override
   public void process(FmqBroker context) {
@@ -21,5 +21,10 @@ public class AddTopicCommandProcessor implements CommandProcessor<FmqBroker> {
   @Override
   public String getName() {
     return "addTopic";
+  }
+
+  @Override
+  public String getCommandHelpInfo() {
+    return "addTopic [name]";
   }
 }

@@ -41,4 +41,9 @@ public class DefaultTopicQueueImpl implements TopicQueue {
     public FmqMessage<?> poll() {
         return queue.poll();
     }
+
+    @Override
+    public Integer size() {
+        return queue.size();
+    }
 }

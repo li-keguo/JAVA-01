@@ -9,13 +9,6 @@ import cn.leaf.freemq.core.producer.FmqProducer;
 import cn.leaf.freemq.model.FmqDataKey;
 import cn.leaf.freemq.model.FmqMessage;
 import cn.leaf.freemq.model.FmqTopic;
-import com.sun.xml.internal.ws.util.CompletedFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 
@@ -23,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author 李克国

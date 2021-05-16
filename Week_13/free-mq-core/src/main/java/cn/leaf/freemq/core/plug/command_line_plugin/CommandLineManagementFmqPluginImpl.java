@@ -6,6 +6,7 @@ import cn.leaf.freemq.core.plug.command.core.CommandExecutor;
 import cn.leaf.freemq.core.plug.command.exception.BaseCommandParseException;
 import cn.leaf.freemq.core.plug.command_line_plugin.process.AddTopicCommandProcessor;
 import cn.leaf.freemq.core.plug.command_line_plugin.process.ExitCommandProcessor;
+import cn.leaf.freemq.core.plug.command_line_plugin.process.HelpCommandProcess;
 import cn.leaf.freemq.core.plug.command_line_plugin.process.SendCommandProcessor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,43 +22,44 @@ import java.util.Scanner;
 @Slf4j
 public class CommandLineManagementFmqPluginImpl implements FmqPlugin {
 
-  CommandExecutor<FmqBroker> commandExecutor;
+    CommandExecutor<FmqBroker> commandExecutor;
 
-  @Override
-  public void run(FmqBroker broker) {
-    initCommandExecutor(broker);
-    broker.getFmqApplicationContext()
-        .threadFactory()
-        .newThread(() -> commandManage(broker))
-        .start();
-  }
-
-  void initCommandExecutor(FmqBroker broker) {
-    commandExecutor = new CommandExecutor(broker);
-    commandExecutor.addCommandProcessor(new SendCommandProcessor())
-        .addCommandProcessor(new AddTopicCommandProcessor())
-        .addCommandProcessor(new ExitCommandProcessor());
-  }
-
-
-  private void commandManage(FmqBroker broker) {
-    log.info("plugin bash is running ... ... ");
-    Scanner scanner = new Scanner(System.in);
-    while (true) {
-      String command = scanner.nextLine();
-      try{
-        commandExecutor.execute(command);
-      }catch (BaseCommandParseException exception){
-        System.out.println(exception.getMessage());
-
-      }
-
+    @Override
+    public void run(FmqBroker broker) {
+        initCommandExecutor(broker);
+        broker.getFmqApplicationContext()
+                .threadFactory()
+                .newThread(() -> commandManage(broker))
+                .start();
     }
-  }
 
-  @Override
-  public void destroy(FmqBroker broker) {
-    log.info("plugin bash is shutdown ... ... ");
-  }
+    void initCommandExecutor(FmqBroker broker) {
+        commandExecutor = new CommandExecutor<FmqBroker>(broker);
+        commandExecutor.addCommandProcessor(new SendCommandProcessor())
+                .addCommandProcessor(new AddTopicCommandProcessor())
+                .addCommandProcessor(new ExitCommandProcessor())
+                .addCommandProcessor(new HelpCommandProcess());
+    }
+
+
+    private void commandManage(FmqBroker broker) {
+        log.info("plugin bash is running ... ... ");
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String command = scanner.nextLine();
+            try {
+                commandExecutor.execute(command);
+            } catch (BaseCommandParseException exception) {
+                System.out.println(exception.getMessage());
+
+            }
+
+        }
+    }
+
+    @Override
+    public void destroy(FmqBroker broker) {
+        log.info("plugin bash is shutdown ... ... ");
+    }
 
 }
